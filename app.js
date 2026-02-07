@@ -170,13 +170,44 @@
       setCardCompleteState(card, task.done);
       saveToStorage();
     });
-    menuBtn.addEventListener('click', () => {
-      if (confirm('Delete this recording?')) {
+
+    const menuWrap = card.querySelector('.card-menu-wrap');
+    const menuDropdown = card.querySelector('.card-menu-dropdown');
+    const menuActionEdit = card.querySelector('.menu-action-edit');
+    const menuActionDelete = card.querySelector('.menu-action-delete');
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllMenus();
+      menuDropdown.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', menuDropdown.classList.contains('hidden') ? 'false' : 'true');
+    });
+
+    menuActionEdit.addEventListener('click', () => {
+      closeAllMenus();
+      transcriptArea.readOnly = false;
+      transcriptArea.focus();
+      transcriptArea.addEventListener('blur', function onBlur() {
+        transcriptArea.removeEventListener('blur', onBlur);
+        transcriptArea.readOnly = true;
+        task.transcript = transcriptArea.value.trim() || task.transcript;
+        saveToStorage();
+      }, { once: true });
+    });
+
+    menuActionDelete.addEventListener('click', () => {
+      closeAllMenus();
+      if (confirm('刪除這則錄音？')) {
         removeTask(task.id);
       }
     });
 
     return { card };
+  }
+
+  function closeAllMenus() {
+    document.querySelectorAll('.card-menu-dropdown').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.menu-btn[aria-expanded="true"]').forEach(el => el.setAttribute('aria-expanded', 'false'));
   }
 
   function renderCards() {
@@ -400,6 +431,7 @@
     RECORD_BTN.addEventListener('click', toggleRecord);
     var resetEl = document.getElementById('reset-btn');
     if (resetEl) resetEl.addEventListener('click', resetAll);
+    document.addEventListener('click', closeAllMenus);
     loadFromStorage();
     renderCards();
   }
