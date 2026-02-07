@@ -1,5 +1,9 @@
 /* VoiceTasks - Mobile-first, high contrast, minimal */
 
+body {
+  font-size: 28px;
+}
+
 /* Wave visualizer bars */
 .wave-bar {
   width: 4px;
