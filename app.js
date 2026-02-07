@@ -130,11 +130,14 @@
   }
 
   /* ---------- Card DOM ---------- */
-  function setCompleteToggleState(card, done) {
-    const btn = card.querySelector('.complete-toggle');
-    if (!btn) return;
-    btn.textContent = done ? '完成' : '未完成';
-    btn.setAttribute('aria-pressed', done ? 'true' : 'false');
+  function setCardCompleteState(card, done) {
+    const toggleBtn = card.querySelector('.complete-toggle');
+    if (toggleBtn) {
+      toggleBtn.textContent = done ? '完成' : '未完成';
+      toggleBtn.setAttribute('aria-pressed', done ? 'true' : 'false');
+    }
+    card.classList.toggle('card-pending', !done);
+    card.classList.toggle('card-done', done);
   }
 
   function createCard(task) {
@@ -150,8 +153,7 @@
     const categoryLine = card.querySelector('.category-line');
 
     durationEl.textContent = formatDuration(task.duration || 0);
-    if (task.done) card.classList.add('done');
-    setCompleteToggleState(card, task.done);
+    setCardCompleteState(card, !!task.done);
 
     if (task.transcript != null) {
       transcriptArea.value = task.transcript || '';
@@ -165,8 +167,7 @@
     playPauseBtn.addEventListener('click', () => togglePlay(card, task));
     completeToggle.addEventListener('click', () => {
       task.done = !task.done;
-      card.classList.toggle('done', task.done);
-      setCompleteToggleState(card, task.done);
+      setCardCompleteState(card, task.done);
       saveToStorage();
     });
     menuBtn.addEventListener('click', () => {
@@ -306,6 +307,7 @@
           card.classList.remove('recording');
           const durEl = card.querySelector('.duration');
           if (durEl) durEl.textContent = formatDuration(currentTask.duration);
+          setCardCompleteState(card, !!currentTask.done);
         }
         const finalTranscript = (recordingTranscript + interimTranscript).trim();
         analyzeWithGemini(blob, finalTranscript).then(result => {
@@ -381,23 +383,23 @@
   }
 
   /* ---------- Reset (remove all recordings) ---------- */
-  function resetAll() {
+  function resetAll(e) {
+    if (e) e.preventDefault();
     if (!confirm('Remove all recordings? This cannot be undone.')) return;
     tasks.forEach(t => {
       if (t.audioUrl) URL.revokeObjectURL(t.audioUrl);
     });
     tasks = [];
     nextRecordingNumber = 1;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks: [], nextRecordingNumber: 1 }));
     renderCards();
+    saveToStorage();
   }
 
   /* ---------- Init ---------- */
   function init() {
-    const recordBtn = document.getElementById('record-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    if (recordBtn) recordBtn.addEventListener('click', toggleRecord);
-    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+    RECORD_BTN.addEventListener('click', toggleRecord);
+    var resetEl = document.getElementById('reset-btn');
+    if (resetEl) resetEl.addEventListener('click', resetAll);
     loadFromStorage();
     renderCards();
   }

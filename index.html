@@ -55,24 +55,24 @@
 
   <!-- Card template -->
   <template id="card-template">
-    <article class="card rounded-2xl shadow-sm border border-neutral-200 overflow-hidden transition-all duration-300 card-pending" data-id="">
+    <article class="card card-pending rounded-2xl shadow-sm border border-neutral-200 overflow-hidden transition-all duration-300" data-id="">
       <div class="p-4 flex items-center gap-3">
-        <button type="button" class="play-pause flex-shrink-0 w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-700 hover:bg-neutral-200 transition-colors" aria-label="Play">
+        <button type="button" class="play-pause flex-shrink-0 w-10 h-10 rounded-full bg-white/80 flex items-center justify-center text-neutral-700 hover:bg-white transition-colors" aria-label="Play">
           <svg class="play-icon w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           <svg class="pause-icon w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
         <div class="wave-container flex items-center gap-0.5 h-8 flex-1 min-w-0">
           <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
         </div>
-        <span class="duration text-sm text-neutral-600 tabular-nums flex-shrink-0 w-12 text-right">0:00</span>
-        <button type="button" class="complete-toggle flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1" aria-pressed="false">未完成</button>
+        <span class="duration text-sm tabular-nums flex-shrink-0 w-12 text-right card-duration">0:00</span>
+        <button type="button" class="complete-toggle flex-shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1" aria-pressed="false">未完成</button>
         <div class="relative flex-shrink-0">
           <button type="button" class="menu-btn w-8 h-8 rounded-full flex items-center justify-center text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors" aria-label="More options">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
           </button>
         </div>
       </div>
-      <div class="transcript-section border-t border-neutral-200 px-4 py-3">
+      <div class="transcript-section border-t border-neutral-200/80 px-4 py-3">
         <textarea
           class="transcript-area w-full min-h-[80px] p-3 rounded-xl border text-[28px] resize-y focus:outline-none focus:ring-2 focus:ring-neutral-400"
           placeholder="Listening..."

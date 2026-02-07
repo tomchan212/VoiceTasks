@@ -56,39 +56,43 @@
 }
 
 /* Card background: Red = not complete, Green = completed */
-.card-pending,
-.card:not(.done) {
+.card.card-pending {
   background-color: rgb(254 226 226);
 }
 
-.card.done {
+.card.card-done {
   background-color: rgb(220 252 231);
 }
 
-/* Transcript area inherits card feel, distinct text */
+.card .transcript-section {
+  background-color: inherit;
+}
+
+/* Transcript area - inherits card tint, readable text */
 .transcript-area {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   background-color: rgba(255, 255, 255, 0.7);
   border-color: rgb(248 113 113);
-  color: rgb(153 27 27);
+  color: rgb(127 29 29);
 }
 
-.transcript-area::placeholder {
+.card.card-pending .transcript-area::placeholder {
   color: rgb(185 28 28);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
-.card.done .transcript-area {
+.card.card-done .transcript-area {
+  background-color: rgba(255, 255, 255, 0.6);
   border-color: rgb(74 222 128);
   color: rgb(22 101 52);
   text-decoration: line-through;
 }
 
-.card.done .transcript-area::placeholder {
+.card.card-done .transcript-area::placeholder {
   color: rgb(34 197 94);
 }
 
-/* Complete toggle button: 未完成 = red, 完成 = green */
+/* Toggle button: 未完成 (red) / 完成 (green) */
 .complete-toggle {
   background-color: rgb(254 226 226);
   border-color: rgb(248 113 113);
@@ -96,17 +100,25 @@
 }
 
 .complete-toggle:hover {
-  background-color: rgb(254 202 202);
+  background-color: rgb(252 165 165);
 }
 
-.card.done .complete-toggle {
-  background-color: rgb(220 252 231);
+.card.card-done .complete-toggle {
+  background-color: rgb(187 247 208);
   border-color: rgb(74 222 128);
   color: rgb(22 101 52);
 }
 
-.card.done .complete-toggle:hover {
-  background-color: rgb(187 247 208);
+.card.card-done .complete-toggle:hover {
+  background-color: rgb(134 239 172);
+}
+
+.card-duration {
+  color: rgb(127 29 29);
+}
+
+.card.card-done .card-duration {
+  color: rgb(22 101 52);
 }
 
 /* Recording indicator */
@@ -122,3 +134,11 @@
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
 
+.complete-toggle:focus-visible {
+  outline: 2px solid rgb(248 113 113);
+  outline-offset: 2px;
+}
+
+.card.card-done .complete-toggle:focus-visible {
+  outline-color: rgb(74 222 128);
+}
