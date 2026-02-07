@@ -1,0 +1,93 @@
+/* VoiceTasks - Mobile-first, high contrast, minimal */
+
+/* Wave visualizer bars */
+.wave-bar {
+  width: 4px;
+  min-height: 4px;
+  max-height: 24px;
+  border-radius: 2px;
+  background: linear-gradient(to top, rgb(82 82 82), rgb(163 163 163));
+  animation: wave-idle 1.2s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0ms; }
+.wave-bar:nth-child(2) { animation-delay: 80ms; }
+.wave-bar:nth-child(3) { animation-delay: 160ms; }
+.wave-bar:nth-child(4) { animation-delay: 240ms; }
+.wave-bar:nth-child(5) { animation-delay: 320ms; }
+.wave-bar:nth-child(6) { animation-delay: 400ms; }
+.wave-bar:nth-child(7) { animation-delay: 480ms; }
+.wave-bar:nth-child(8) { animation-delay: 560ms; }
+.wave-bar:nth-child(9) { animation-delay: 640ms; }
+.wave-bar:nth-child(10) { animation-delay: 720ms; }
+
+@keyframes wave-idle {
+  0%, 100% { height: 6px; }
+  50% { height: 16px; }
+}
+
+/* Active recording/playback */
+.card.recording .wave-bar,
+.card.playing .wave-bar {
+  animation: wave-active 0.6s ease-in-out infinite;
+  background: linear-gradient(to top, rgb(185 28 28), rgb(220 38 38));
+}
+
+@keyframes wave-active {
+  0%, 100% { height: 4px; }
+  50% { height: 24px; }
+}
+
+/* Record button - pulse when active */
+.record-btn.recording {
+  background: rgb(220 38 38);
+  color: white;
+  box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6);
+  animation: record-pulse 1.2s ease-in-out infinite;
+}
+
+.record-btn.recording:hover {
+  background: rgb(185 28 28);
+}
+
+@keyframes record-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+  50% { box-shadow: 0 0 0 16px rgba(220, 38, 38, 0); }
+}
+
+/* Card complete state */
+.card.done .transcript-section {
+  opacity: 0.85;
+}
+
+.card.done .transcript-area {
+  text-decoration: line-through;
+  color: rgb(82 82 82);
+}
+
+/* Transcript textarea - high contrast */
+.transcript-area {
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.transcript-area::placeholder {
+  color: rgb(115 115 115);
+}
+
+/* Recording indicator */
+.recording-indicator {
+  transition: opacity 0.2s;
+}
+
+/* Smooth transitions */
+.card,
+.record-btn,
+.play-pause,
+.wave-bar {
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.complete-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+}
