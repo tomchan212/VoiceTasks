@@ -130,6 +130,13 @@
   }
 
   /* ---------- Card DOM ---------- */
+  function setCompleteToggleState(card, done) {
+    const btn = card.querySelector('.complete-toggle');
+    if (!btn) return;
+    btn.textContent = done ? '完成' : '未完成';
+    btn.setAttribute('aria-pressed', done ? 'true' : 'false');
+  }
+
   function createCard(task) {
     const frag = CARD_TEMPLATE.content.cloneNode(true);
     const card = frag.querySelector('.card');
@@ -137,14 +144,14 @@
 
     const playPauseBtn = card.querySelector('.play-pause');
     const durationEl = card.querySelector('.duration');
-    const completeCheckbox = card.querySelector('.complete-checkbox');
+    const completeToggle = card.querySelector('.complete-toggle');
     const menuBtn = card.querySelector('.menu-btn');
     const transcriptArea = card.querySelector('.transcript-area');
     const categoryLine = card.querySelector('.category-line');
 
     durationEl.textContent = formatDuration(task.duration || 0);
-    completeCheckbox.checked = task.done || false;
     if (task.done) card.classList.add('done');
+    setCompleteToggleState(card, task.done);
 
     if (task.transcript != null) {
       transcriptArea.value = task.transcript || '';
@@ -156,9 +163,10 @@
     }
 
     playPauseBtn.addEventListener('click', () => togglePlay(card, task));
-    completeCheckbox.addEventListener('change', () => {
-      task.done = completeCheckbox.checked;
+    completeToggle.addEventListener('click', () => {
+      task.done = !task.done;
       card.classList.toggle('done', task.done);
+      setCompleteToggleState(card, task.done);
       saveToStorage();
     });
     menuBtn.addEventListener('click', () => {
@@ -380,13 +388,23 @@
     });
     tasks = [];
     nextRecordingNumber = 1;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tasks: [], nextRecordingNumber: 1 }));
     renderCards();
-    saveToStorage();
   }
 
   /* ---------- Init ---------- */
-  RECORD_BTN.addEventListener('click', toggleRecord);
-  if (RESET_BTN) RESET_BTN.addEventListener('click', resetAll);
-  loadFromStorage();
-  renderCards();
+  function init() {
+    const recordBtn = document.getElementById('record-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    if (recordBtn) recordBtn.addEventListener('click', toggleRecord);
+    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+    loadFromStorage();
+    renderCards();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
