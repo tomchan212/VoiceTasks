@@ -7,6 +7,7 @@
   const RECORD_BTN = document.getElementById('record-btn');
   const RECORD_BTN_LABEL = document.getElementById('record-btn-label');
   const RECORDING_INDICATOR = document.getElementById('recording-indicator');
+  const RESET_BTN = document.getElementById('reset-btn');
   const CARD_TEMPLATE = document.getElementById('card-template');
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -371,8 +372,21 @@
     currentAudio.play();
   }
 
+  /* ---------- Reset (remove all recordings) ---------- */
+  function resetAll() {
+    if (!confirm('Remove all recordings? This cannot be undone.')) return;
+    tasks.forEach(t => {
+      if (t.audioUrl) URL.revokeObjectURL(t.audioUrl);
+    });
+    tasks = [];
+    nextRecordingNumber = 1;
+    renderCards();
+    saveToStorage();
+  }
+
   /* ---------- Init ---------- */
   RECORD_BTN.addEventListener('click', toggleRecord);
+  if (RESET_BTN) RESET_BTN.addEventListener('click', resetAll);
   loadFromStorage();
   renderCards();
 })();
